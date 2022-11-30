@@ -2,27 +2,27 @@ import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 import { AuthLayout } from '../layout/AuthLayout'
-import { checkingAuthentication, startGoogleSingIn } from '../../store/auth'
+import { startGoogleSingIn , startLoginWithEmailPassword} from '../../store/auth'
 import { useForm } from '../../hooks'
 import { Google } from "@mui/icons-material"
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 
 
 export const LoginPage = () => {
 
-  const { status } = useSelector( state => state.auth );
+  const { status, errorMessage } = useSelector( state => state.auth );
   const dispath = useDispatch();
   const { email, password, onInputChange } = useForm({
-    email : 'carlos@google.com',
-    password: '123456'
+    email : '',
+    password: ''
   });
 
   const isAuthenticating = useMemo( () => status === 'checking', [status]);
 
   const onSumbit = ( event ) => {
      event.preventDefault();
-     console.log( { email, password });
-     dispath( checkingAuthentication() );
+     //dispath( checkingAuthentication() );
+     dispath(startLoginWithEmailPassword({ email, password }) );
   }
 
   const onGoogleSignIn = () => {
@@ -56,6 +56,19 @@ export const LoginPage = () => {
                         value={ password }
                         onChange  = { onInputChange }
                         />
+                   </Grid>
+
+                   <Grid container>
+                      <Grid 
+                        item
+                        xs={ 12 }
+                        display= { !!errorMessage ? '' : 'none'}
+                        sx={{ mt: 1}}
+                      >
+                        <Alert severity='error'>{ errorMessage }</Alert>
+
+                      </Grid>
+
                    </Grid>
 
                    <Grid container spacing={ 2 } sx={ { mb: 2, mt: 1 }}>
