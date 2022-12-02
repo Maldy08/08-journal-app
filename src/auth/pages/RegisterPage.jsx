@@ -1,11 +1,11 @@
+import { useMemo, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { startCreatingUserWithEmailPassword } from '../../store/auth'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { startCreatingUserWithEmailPassword } from '../../store/auth'
-import { Satellite } from '@mui/icons-material'
+
 
 
 const formData = {
@@ -15,17 +15,17 @@ const formData = {
 }
 
 const formValidations = {
-   email: [ (value) => value.includes('@'), 'El correo debe de tener una @'],
-   password: [ (value) => value.length >= 6, 'El password debe de contener mas de seis caracteres'],
-   displayName: [ (value) => value.length >=1 , 'El nombre es obligatorio']
+   email: [ ( value ) => value.includes('@'), 'El correo debe de tener una @'],
+   password: [ ( value ) => value.length >= 6, 'El password debe de contener mas de seis caracteres'],
+   displayName: [ ( value ) => value.length >= 1 , 'El nombre es obligatorio']
 }
 
 export const RegistarPage = () => {
 
    const dispatch = useDispatch();
-   const [formSubmitted, setFormSubmitted] = useState(false);
+   const [formSubmitted, setFormSubmitted] = useState( false );
 
-   const { status, errorMessage } = useSelector( state => state.auth);
+   const { status, errorMessage } = useSelector( state => state.auth );
    const isCheckingAuthentication = useMemo( () => status === 'checking', [status]);
 
    const { 
@@ -44,7 +44,7 @@ export const RegistarPage = () => {
   return (
 
     <AuthLayout title='Crear cuenta'>
-       <form onSubmit={ onSubmit }>
+       <form onSubmit={ onSubmit } className='animate__animated animate__fadeIn animate__faster'>
                 <Grid container>
                    <Grid item xs={ 12 } sx={{ mt:2 }}>
                       <TextField 
@@ -113,7 +113,7 @@ export const RegistarPage = () => {
                 </Grid>
 
                 <Grid container direction='row' justifyContent='end'>
-                 <Typography sx={{ mr: 1}}>Ya tienes cuenta?</Typography>
+                 <Typography sx={{ mr: 1 }}>Ya tienes cuenta?</Typography>
                   <Link component={ RouterLink } color='inherit' to='/auth/login'>
                      Ingresar
                   </Link>
